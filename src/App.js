@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+﻿import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -142,6 +142,12 @@ export default function Portfolio() {
   React.useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+
+      // Ignore minimal scroll changes (prevent "jitter" hiding during horizontal swipes)
+      if (Math.abs(currentScrollY - lastScrollY.current) < 10) {
+        return;
+      }
+
       if (currentScrollY < 80) {
         setToolbarVisible(true);
       } else if (currentScrollY > lastScrollY.current) {
