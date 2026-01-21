@@ -1,0 +1,23 @@
+{
+  "hero": {
+    "greeting": "Xin chào, tôi là",
+    "name": "Jonas",
+    "title": "Nhà Phát Triển Full-Stack",
+    "description": "Một kỹ sư phần mềm đam mê với nền tảng vững chắc trong phát triển full-stack và học máy. Với kinh nghiệm thực tế trong lập trình, giải quyết vấn đề và làm việc nhóm thông qua các dự án thực tế, tôi mang đến sự chủ động sẵn sàng học hỏi các công nghệ mới và đóng góp hiệu quả trong môi trường CNTT chuyên nghiệp.",
+    "getInTouch": "Liên Hệ",
+    "downloadCV": "Tải CV"
+  },
+  "navigation": {
+    "about": "Giới Thiệu",
+    "skills": "Kỹ Năng",
+    "projects": "Dự Án",
+    "certificates": "Chứng Chỉ",
+    "experience": "Kinh Nghiệm",
+    "contact": "Liên Hệ"
+  },
+  "toolbar": {
+    "translate": "Dịch",
+    "vietnamese": "Tiếng Việt",
+    "english": "English"
+  }
+}

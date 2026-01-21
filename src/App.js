@@ -1,25 +1,483 @@
-import logo from './logo.svg';
+﻿import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ArrowUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Projects } from './components/Projects';
+import { Certificates } from './components/Certificates';
+import { Experience } from './components/Experience';
+import { Contact } from './components/Contact';
+import { Skills } from './components/Skills.jsx';
+import { Footer } from './components/Footer.jsx';
+import { Hero } from './components/Hero.jsx';
+import { About } from './components/About.jsx';
+import { Toolbar } from './components/Toolbar.jsx';
+import { QrModal } from './components/QrModal.jsx';
+import { HeartedProjectsPage } from './components/HeartedProjectsPage.jsx';
+import ParticleBackground from './components/ParticleBackground';
+import CustomCursor from './components/CustomCursor.jsx';
+import { getPortfolioData, texts, popupMessages } from './data/portfolioData';
 import './App.css';
+import './glass.css';
+import './i18n';
 
-function App() {
+export default function Portfolio() {
+  const { t, i18n } = useTranslation();
+  const [displayedText, setDisplayedText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [textIndex, setTextIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState('about');
+
+
+  const [darkMode, setDarkMode] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [aboutWordsVisible, setAboutWordsVisible] = useState({});
+  const [aboutHeadingVisible, setAboutHeadingVisible] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [notification, setNotification] = useState('');
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [shareSuccess, setShareSuccess] = useState(false);
+  const [heartedProjects, setHeartedProjects] = useState([]);
+  const [heartAnimating, setHeartAnimating] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isHeartedPage = location.pathname === '/hearted';
+
+  const portfolioUrl = useMemo(
+    () => (typeof window !== 'undefined' ? window.location.origin : 'https://example.com'),
+    []
+  );
+  const qrCodeUrl = useMemo(
+    () => `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(portfolioUrl)}`,
+    [portfolioUrl]
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const sections = ['about', 'skills', 'projects', 'certificates', 'experience', 'contact'];
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('heartedProjects');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setHeartedProjects(Array.isArray(parsed) ? parsed : []);
+      }
+    } catch (error) {
+      console.error('Failed to load hearted projects:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('heartedProjects', JSON.stringify(heartedProjects));
+    } catch (error) {
+      console.error('Failed to save hearted projects:', error);
+    }
+  }, [heartedProjects]);
+
+  const isHearted = (id) => heartedProjects.includes(id);
+
+  const toggleHeart = (id) => {
+    setHeartedProjects((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+  };
+  const [toolbarVisible, setToolbarVisible] = useState(true);
+  const lastScrollY = React.useRef(0);
+  const [popupMessageIndex, setPopupMessageIndex] = useState(0);
+  const [popupVisible, setPopupVisible] = useState(true);
+  const [isReading, setIsReading] = useState(false);
+
+  const bioText = t('hero.description');
+
+  const portfolioData = getPortfolioData(bioText);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setPopupVisible(false);
+      setTimeout(() => {
+        setPopupMessageIndex((prev) => (prev + 1) % popupMessages.length);
+        setPopupVisible(true);
+      }, 400);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [popupMessages.length]);
+
+  React.useEffect(() => {
+    const currentText = texts[textIndex];
+    let timer;
+
+    if (!isDeleting && displayedText === currentText) {
+      timer = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && displayedText === '') {
+      setIsDeleting(false);
+      setTextIndex((prev) => (prev + 1) % texts.length);
+    } else {
+      timer = setTimeout(() => {
+        const nextLength = displayedText.length + (isDeleting ? -1 : 1);
+        setDisplayedText(currentText.substring(0, Math.max(nextLength, 0)));
+      }, isDeleting ? 20 : 45);
+    }
+
+    return () => clearTimeout(timer);
+  }, [displayedText, isDeleting, textIndex, texts]);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 80) {
+        setToolbarVisible(true);
+      } else if (currentScrollY > lastScrollY.current) {
+        setToolbarVisible(false);
+      } else {
+        setToolbarVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to top listener
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+
+
+
+
+
+
+  // About section word animation effect
+  const aboutTimeoutsRef = React.useRef([]);
+
+  React.useEffect(() => {
+    if (isHeartedPage) {
+      return;
+    }
+
+    const aboutSection = document.getElementById('about');
+    const aboutObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Clear any existing timeouts
+            aboutTimeoutsRef.current.forEach(t => clearTimeout(t));
+            aboutTimeoutsRef.current = [];
+
+            // Animate heading first
+            setAboutHeadingVisible(true);
+            // Animate words one by one with staggered delay
+            const wordCount = bioText?.split(' ').length || 50;
+            for (let idx = 0; idx < wordCount; idx++) {
+              const timeout = setTimeout(() => {
+                setAboutWordsVisible(prev => ({ ...prev, [idx]: true }));
+              }, idx * 80);
+              aboutTimeoutsRef.current.push(timeout);
+            }
+          } else {
+            // Clear timeouts and reset when scrolling away
+            aboutTimeoutsRef.current.forEach(t => clearTimeout(t));
+            aboutTimeoutsRef.current = [];
+            setAboutHeadingVisible(false);
+            setAboutWordsVisible({});
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (aboutSection) {
+      aboutObserver.observe(aboutSection);
+    }
+
+    return () => {
+      aboutObserver.disconnect();
+      if (aboutSection) {
+        aboutObserver.unobserve(aboutSection);
+      }
+    };
+  }, [bioText, isHeartedPage]);
+
+  const scrollToSection = (id) => {
+    if (isHeartedPage) {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleCopyLink = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = url;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+      }
+      setNotification('Link copied to clipboard!');
+      setCopySuccess(true);
+      setTimeout(() => {
+        setNotification('');
+        setCopySuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Copy failed:', error);
+      setNotification('Failed to copy link');
+      setTimeout(() => setNotification(''), 3000);
+    }
+  };
+
+  const handleShareLink = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: document.title, url });
+        setNotification('Link shared successfully!');
+        setShareSuccess(true);
+      } else {
+        await handleCopyLink();
+        setNotification('Link copied to clipboard!');
+        setCopySuccess(true);
+      }
+      setTimeout(() => {
+        setNotification('');
+        setCopySuccess(false);
+        setShareSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Share failed:', error);
+      setNotification('Failed to share link');
+      setTimeout(() => setNotification(''), 3000);
+    }
+  };
+
+  const handleDownloadQr = async () => {
+    try {
+      const response = await fetch(qrCodeUrl);
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = 'portfolio-qr.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error('QR download failed:', error);
+    }
+  };
+
+  const toggleReadAloud = () => {
+    if (!window.speechSynthesis) return;
+
+    if (isReading) {
+      window.speechSynthesis.cancel();
+      setIsReading(false);
+      return;
+    }
+
+    const sections = Array.from(document.querySelectorAll('section'));
+    const text = sections.map((section) => section.innerText).join('\n\n').trim();
+    if (!text) return;
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.onend = () => setIsReading(false);
+    utterance.onerror = () => setIsReading(false);
+
+    window.speechSynthesis.cancel();
+    setIsReading(true);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleHeartClick = (id) => {
+    setHeartAnimating((prev) => ({ ...prev, [id]: true }));
+    toggleHeart(id);
+    setTimeout(() => {
+      setHeartAnimating((prev) => ({ ...prev, [id]: false }));
+    }, 600); // Animation duration
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className={`min-h-screen ${darkMode ? 'bg-gradient-to-br from-[#050508] via-[#0a0a10] to-[#070709]' : 'bg-gradient-to-br from-blue-50 via-cyan-50 to-white'}`}>
+      <CustomCursor darkMode={darkMode} />
+      <ParticleBackground darkMode={darkMode} />
+      {!isHeartedPage && (
+        <div className="fixed top-4 left-4 sm:top-14 sm:left-14 z-50">
+          <div
+            className={`flex items-center gap-2 px-3 py-1.5 sm:gap-2.5 sm:px-4 sm:py-2 rounded-full backdrop-blur-2xl border shadow-[0_10px_30px_rgba(0,0,0,0.25)] ${darkMode ? 'bg-slate-900/45 border-white/5' : 'bg-white/70 border-blue-200/40'}`}
+            style={{
+              background: darkMode
+                ? 'linear-gradient(135deg, rgba(15,23,42,0.55), rgba(30,41,59,0.45))'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(219,234,254,0.6))',
+              boxShadow: darkMode
+                ? 'inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 30px rgba(0,0,0,0.35)'
+                : 'inset 0 1px 0 rgba(255,255,255,0.8), 0 14px 30px rgba(30,64,175,0.12)'
+            }}
+          >
+            <div className="relative w-2.5 h-2.5">
+              <span className={`absolute inset-0 rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-600'}`} style={{ animation: 'dotSwap 2s ease-in-out infinite, radarPulse 1.5s ease-in-out infinite' }}></span>
+              <span className={`absolute inset-0 rounded-full ${darkMode ? 'bg-cyan-300' : 'bg-blue-500'}`} style={{ animation: 'dotSwap 2s ease-in-out infinite, radarPulse 1.5s ease-in-out infinite', animationDelay: '1s' }}></span>
+            </div>
+            <p className={`text-xs sm:text-sm font-semibold ${darkMode ? 'text-blue-200' : 'text-blue-900'} relative h-4 sm:h-5 overflow-hidden`}
+              style={{ minWidth: '6.2rem' }}>
+              <span className="absolute left-0 top-0" style={{ animation: 'labelSwap 2s ease-in-out infinite' }}>
+                Open for work
+              </span>
+              <span className="absolute left-0 top-0" style={{ animation: 'labelSwap 2s ease-in-out infinite', animationDelay: '1s' }}>
+                Available
+              </span>
+            </p>
+          </div>
+        </div>
+      )}
+
+
+
+
+
+      {/* Floating Toolbar */}
+      <Toolbar
+        toolbarVisible={toolbarVisible}
+        activeSection={activeSection}
+        scrollToSection={scrollToSection}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        toggleReadAloud={toggleReadAloud}
+        isReading={isReading}
+        handleCopyLink={handleCopyLink}
+        copySuccess={copySuccess}
+        handleShareLink={handleShareLink}
+        shareSuccess={shareSuccess}
+        setQrOpen={setQrOpen}
+      />
+
+      <QrModal
+        qrOpen={qrOpen}
+        setQrOpen={setQrOpen}
+        portfolioUrl={portfolioUrl}
+        qrCodeUrl={qrCodeUrl}
+        handleDownloadQr={handleDownloadQr}
+      />
+
+      {isHeartedPage && (
+        <HeartedProjectsPage
+          darkMode={darkMode}
+          navigate={navigate}
+          portfolioData={portfolioData}
+          isHearted={isHearted}
+          handleHeartClick={handleHeartClick}
+          heartAnimating={heartAnimating}
+        />
+      )}
+
+      {!isHeartedPage && (
+        <>
+          {/* Hero Section */}
+          <Hero
+            portfolioData={portfolioData}
+            darkMode={darkMode}
+            displayedText={displayedText}
+            popupVisible={popupVisible}
+            popupMessages={popupMessages}
+            popupMessageIndex={popupMessageIndex}
+            chatOpen={chatOpen}
+            setChatOpen={setChatOpen}
+            scrollToSection={scrollToSection}
+          />
+
+          {/* Scroll to Top Button */}
+          {showScrollTop && (
+            <button
+              onClick={scrollToTop}
+              className={`fixed bottom-16 sm:bottom-8 right-4 sm:right-8 left-auto p-2 sm:p-3 rounded-full transition-all duration-300 transform hover:scale-110 z-[60] animate-bounce ${darkMode
+                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/50'
+                : 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg shadow-blue-500/60 ring-2 ring-blue-200/80'
+                } text-white`}
+              aria-label="Scroll to top"
+            >
+              <ArrowUp size={24} />
+            </button>
+          )}
+
+          {/* About Section */}
+          <About
+            portfolioData={portfolioData}
+            darkMode={darkMode}
+            aboutHeadingVisible={aboutHeadingVisible}
+            aboutWordsVisible={aboutWordsVisible}
+          />
+
+          {/* Skills Section */}
+          <Skills portfolioData={portfolioData} darkMode={darkMode} />
+
+          {/* Projects Section */}
+          <Projects
+            portfolioData={portfolioData}
+            darkMode={darkMode}
+            isHearted={isHearted}
+            handleHeartClick={handleHeartClick}
+            heartAnimating={heartAnimating}
+          />
+
+          {/* Certificates Section */}
+          <Certificates portfolioData={portfolioData} darkMode={darkMode} />
+
+          {/* Experience Section */}
+          <Experience portfolioData={portfolioData} darkMode={darkMode} />
+
+          {/* Contact Section */}
+
+          {/* Contact Section */}
+          <Contact portfolioData={portfolioData} darkMode={darkMode} />
+
+          {/* Footer */}
+          <Footer portfolioData={portfolioData} darkMode={darkMode} />
+        </>
+      )
+      }
+    </div >
   );
 }
-
-export default App;
