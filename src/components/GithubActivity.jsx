@@ -7,7 +7,7 @@ export const GithubActivity = ({ darkMode }) => {
     const days = 7;
 
     // Contribution levels: 0 (none) to 4 (most)
-    const levels = [0, 1, 2, 3, 4];
+
 
     // Generate a random-looking but stable grid
     const gridData = Array.from({ length: weeks * days }, (_, i) => {

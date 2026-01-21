@@ -3,8 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 export default function CustomCursor({ darkMode }) {
     const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
     const [isHovering, setIsHovering] = useState(false);
-    const mainCursorRef = useRef(null);
-    const dotCursorRef = useRef(null);
+
 
     useEffect(() => {
         const handleMouseMove = (e) => {

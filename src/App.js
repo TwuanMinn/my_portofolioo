@@ -21,7 +21,7 @@ import './glass.css';
 import './i18n';
 
 export default function Portfolio() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [displayedText, setDisplayedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
@@ -34,7 +34,6 @@ export default function Portfolio() {
   const [aboutWordsVisible, setAboutWordsVisible] = useState({});
   const [aboutHeadingVisible, setAboutHeadingVisible] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [notification, setNotification] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
   const [shareSuccess, setShareSuccess] = useState(false);
   const [heartedProjects, setHeartedProjects] = useState([]);
@@ -119,7 +118,7 @@ export default function Portfolio() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [popupMessages.length]);
+  }, []); // popupMessages is a constant import, dependency not needed or can include if constant
 
   React.useEffect(() => {
     const currentText = texts[textIndex];
@@ -138,7 +137,7 @@ export default function Portfolio() {
     }
 
     return () => clearTimeout(timer);
-  }, [displayedText, isDeleting, textIndex, texts]);
+  }, [displayedText, isDeleting, textIndex]); // Removed 'texts' as it's an imported constant
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -254,16 +253,12 @@ export default function Portfolio() {
         document.execCommand('copy');
         document.body.removeChild(tempInput);
       }
-      setNotification('Link copied to clipboard!');
       setCopySuccess(true);
       setTimeout(() => {
-        setNotification('');
         setCopySuccess(false);
       }, 3000);
     } catch (error) {
       console.error('Copy failed:', error);
-      setNotification('Failed to copy link');
-      setTimeout(() => setNotification(''), 3000);
     }
   };
 
@@ -272,22 +267,17 @@ export default function Portfolio() {
     try {
       if (navigator.share) {
         await navigator.share({ title: document.title, url });
-        setNotification('Link shared successfully!');
         setShareSuccess(true);
       } else {
         await handleCopyLink();
-        setNotification('Link copied to clipboard!');
         setCopySuccess(true);
       }
       setTimeout(() => {
-        setNotification('');
         setCopySuccess(false);
         setShareSuccess(false);
       }, 3000);
     } catch (error) {
       console.error('Share failed:', error);
-      setNotification('Failed to share link');
-      setTimeout(() => setNotification(''), 3000);
     }
   };
 
