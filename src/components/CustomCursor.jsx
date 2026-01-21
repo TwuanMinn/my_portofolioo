@@ -30,7 +30,7 @@ export default function CustomCursor({ darkMode }) {
     return (
         <>
             <div
-                className="fixed top-0 left-0 pointer-events-none z-[9999] transition-transform duration-300 ease-out flex items-center justify-center translate-x-[-50%] translate-y-[-50%]"
+                className="hidden md:flex fixed top-0 left-0 pointer-events-none z-[9999] transition-transform duration-300 ease-out items-center justify-center translate-x-[-50%] translate-y-[-50%]"
                 style={{
                     left: `${mousePosition.x}px`,
                     top: `${mousePosition.y}px`,
@@ -42,7 +42,7 @@ export default function CustomCursor({ darkMode }) {
                 />
             </div>
             <div
-                className="fixed top-0 left-0 w-1.5 h-1.5 rounded-full pointer-events-none z-[9999] translate-x-[-50%] translate-y-[-50%]"
+                className="hidden md:block fixed top-0 left-0 w-1.5 h-1.5 rounded-full pointer-events-none z-[9999] translate-x-[-50%] translate-y-[-50%]"
                 style={{
                     left: `${mousePosition.x}px`,
                     top: `${mousePosition.y}px`,
