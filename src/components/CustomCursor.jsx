@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function CustomCursor({ darkMode }) {
     const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
