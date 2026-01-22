@@ -6,9 +6,10 @@ const LoadingScreen = ({ onLoadingComplete }) => {
     const [currentLine, setCurrentLine] = useState(0);
 
     useEffect(() => {
-        // Animate code lines appearing - spread over 4 seconds
+        // Animate 16 code lines appearing - spread over 4.5 seconds
         const lineTimers = [];
-        const delays = [0, 600, 1200, 1800, 2400, 3000, 3600];
+        // Calculate delays for 16 lines (approx 280ms per line)
+        const delays = Array.from({ length: 17 }, (_, i) => i * 260);
 
         delays.forEach((delay, index) => {
             const timer = setTimeout(() => {
@@ -17,17 +18,17 @@ const LoadingScreen = ({ onLoadingComplete }) => {
             lineTimers.push(timer);
         });
 
-        // Complete loading after 5 seconds
+        // Complete loading after ~7.5 seconds (4.2s animation + 3s pause)
         const completeTimer = setTimeout(() => {
             setIsLoading(false);
-        }, 5000);
+        }, 7500);
 
-        // Call onLoadingComplete after exit animation (5s + 0.5s for exit)
+        // Call onLoadingComplete after exit animation
         const callbackTimer = setTimeout(() => {
             if (onLoadingComplete) {
                 onLoadingComplete();
             }
-        }, 5500);
+        }, 8000);
 
         return () => {
             lineTimers.forEach(t => clearTimeout(t));
@@ -36,12 +37,22 @@ const LoadingScreen = ({ onLoadingComplete }) => {
         };
     }, []); // Empty dependency array - run once on mount
 
-    // Code lines data
+    // 16 lines of code
     const codeLines = [
+        { text: 'import { Bio, Skill } from "life";' },
+        { text: '' },
         { text: 'const developer = {' },
         { text: '  name: "Minh Tuấn",' },
         { text: '  role: "Software Engineer",' },
-        { text: '  passion: "Building Digital Experiences"' },
+        { text: '  skills: ["React", "Node", "Design"],' },
+        { text: '  hardWorker: true,' },
+        { text: '  quickLearner: true,' },
+        { text: '  problemSolver: true,' },
+        { text: '  passion: "Crafting intuitive and",' },
+        { text: '           "visually appealing UI/UX",' },
+        { text: '  hireable: function() {' },
+        { text: '    return this.hardWorker;' },
+        { text: '  }' },
         { text: '};' },
         { text: '' },
         { text: 'developer.init();' },
@@ -108,7 +119,7 @@ const LoadingScreen = ({ onLoadingComplete }) => {
                             </div>
 
                             {/* Code content */}
-                            <div className="bg-[#0d1117] p-6 font-mono text-sm min-h-[200px]">
+                            <div className="bg-[#0d1117] p-6 font-mono text-xs sm:text-sm min-h-[320px] overflow-hidden">
                                 {codeLines.map((line, index) => (
                                     <motion.div
                                         key={index}
@@ -120,10 +131,23 @@ const LoadingScreen = ({ onLoadingComplete }) => {
                                         }}
                                         transition={{ duration: 0.15 }}
                                     >
-                                        <span className="text-slate-600 w-6 text-right mr-4 select-none">
+                                        <span className="text-slate-600 w-6 text-right mr-4 select-none flex-shrink-0">
                                             {index + 1}
                                         </span>
-                                        <span className="flex-1">
+                                        <span className="flex-1 whitespace-pre">
+                                            {line.text.includes('import') && (
+                                                <>
+                                                    <span className="text-purple-400">import </span>
+                                                    <span className="text-white">{'{ '}</span>
+                                                    <span className="text-yellow-300">Bio</span>
+                                                    <span className="text-white">, </span>
+                                                    <span className="text-yellow-300">Skill</span>
+                                                    <span className="text-white">{' }'}</span>
+                                                    <span className="text-purple-400"> from </span>
+                                                    <span className="text-green-400">"life"</span>
+                                                    <span className="text-white">;</span>
+                                                </>
+                                            )}
                                             {line.text.includes('const') && (
                                                 <>
                                                     <span className="text-purple-400">const</span>
@@ -147,15 +171,59 @@ const LoadingScreen = ({ onLoadingComplete }) => {
                                                     <span className="text-white">,</span>
                                                 </>
                                             )}
+                                            {line.text.includes('skills:') && (
+                                                <>
+                                                    <span className="text-blue-300">  skills</span>
+                                                    <span className="text-white">: [</span>
+                                                    <span className="text-green-400">"React"</span>
+                                                    <span className="text-white">, </span>
+                                                    <span className="text-green-400">"Node"</span>
+                                                    <span className="text-white">, </span>
+                                                    <span className="text-green-400">"Design"</span>
+                                                    <span className="text-white">],</span>
+                                                </>
+                                            )}
+                                            {(line.text.includes('hardWorker:') || line.text.includes('quickLearner:') || line.text.includes('problemSolver:')) && (
+                                                <>
+                                                    <span className="text-blue-300">  {line.text.split(':')[0].trim()}</span>
+                                                    <span className="text-white">: </span>
+                                                    <span className="text-orange-400">true</span>
+                                                    <span className="text-white">,</span>
+                                                </>
+                                            )}
                                             {line.text.includes('passion:') && (
                                                 <>
                                                     <span className="text-blue-300">  passion</span>
                                                     <span className="text-white">: </span>
-                                                    <span className="text-green-400">"Building Digital Experiences"</span>
+                                                    <span className="text-green-400">"Crafting intuitive and"</span>
+                                                    <span className="text-white">,</span>
                                                 </>
                                             )}
+                                            {line.text.includes('visually appealing') && (
+                                                <>
+                                                    <span className="text-green-400">           "visually appealing UI/UX"</span>
+                                                    <span className="text-white">,</span>
+                                                </>
+                                            )}
+                                            {line.text.includes('hireable:') && (
+                                                <>
+                                                    <span className="text-blue-300">  hireable</span>
+                                                    <span className="text-white">: </span>
+                                                    <span className="text-purple-400">function</span>
+                                                    <span className="text-white">() {'{'}</span>
+                                                </>
+                                            )}
+                                            {line.text.includes('return') && (
+                                                <>
+                                                    <span className="text-purple-400">    return this</span>
+                                                    <span className="text-white">.hardWorker;</span>
+                                                </>
+                                            )}
+                                            {line.text.trim() === '}' && (
+                                                <span className="text-white">  {'}'}</span>
+                                            )}
                                             {line.text === '};' && (
-                                                <span className="text-white">{'}'};</span>
+                                                <span className="text-white">{'};'}</span>
                                             )}
                                             {line.text.includes('.init()') && (
                                                 <>
@@ -195,7 +263,7 @@ const LoadingScreen = ({ onLoadingComplete }) => {
                                             }}
                                             initial={{ width: '0%' }}
                                             animate={{ width: '100%' }}
-                                            transition={{ duration: 4.8, ease: 'easeInOut' }}
+                                            transition={{ duration: 7.5, ease: 'easeInOut' }}
                                         />
                                     </motion.div>
                                     <span className="text-xs text-slate-400 font-mono">Loading...</span>
