@@ -19,7 +19,7 @@ export const Hero = ({
 
     return (
         <section className="min-h-screen flex items-center justify-center px-4 pt-32 sm:pt-48">
-            <div className="text-center max-w-4xl">
+            <div className="text-center max-w-4xl w-full" style={{ padding: '0 0.5rem' }}>
                 <div className="mb-8 flex justify-center">
                     <div className="relative">
                         {/* Popup Message Bubbles */}
@@ -57,7 +57,7 @@ export const Hero = ({
                         <div className={`absolute -inset-1 bg-gradient-to-r ${darkMode ? 'from-blue-400 via-cyan-300 to-white' : 'from-blue-500 via-blue-400 to-blue-500'} rounded-full blur-xl ${darkMode ? 'opacity-80' : 'opacity-60'}`} style={{ animation: `pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite` }}></div>
                         <div className={`absolute -inset-2 bg-gradient-to-r ${darkMode ? 'from-blue-600 via-cyan-500 to-blue-600' : 'from-blue-600 via-blue-500 to-blue-600'} rounded-full blur-2xl ${darkMode ? 'opacity-60' : 'opacity-40'}`} style={{ animation: `pulse-custom 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite` }}></div>
                         <div className={`relative w-36 h-36 sm:w-48 sm:h-48 rounded-full ${darkMode ? 'bg-gradient-to-br from-[#0c0c0e] via-[#08080b] to-[#010101] border-4 border-[#0a0a0c] white-glow' : 'bg-gradient-to-br from-white via-blue-50 to-blue-100 border-4 border-blue-200'} flex items-center justify-center shadow-2xl overflow-hidden`}>
-                            <img src="/jonasptfl.jpg" alt="Profile" className="w-full h-full object-cover" />
+                            <img src="/jonasptfl.jpg" alt="Profile" className="w-full h-full object-cover" style={{ maxWidth: '100%', height: 'auto', borderRadius: '50%' }} />
                         </div>
                     </div>
                 </div>

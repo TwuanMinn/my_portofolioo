@@ -15,6 +15,7 @@ import { QrModal } from './components/QrModal.jsx';
 import { HeartedProjectsPage } from './components/HeartedProjectsPage.jsx';
 import ParticleBackground from './components/ParticleBackground';
 import CustomCursor from './components/CustomCursor.jsx';
+import StatusBadge from './components/StatusBadge.jsx';
 import { getPortfolioData, texts, popupMessages } from './data/portfolioData';
 import './App.css';
 import './glass.css';
@@ -339,36 +340,10 @@ export default function Portfolio() {
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gradient-to-br from-[#050508] via-[#0a0a10] to-[#070709]' : 'bg-gradient-to-br from-blue-50 via-cyan-50 to-white'}`}>
       <CustomCursor darkMode={darkMode} />
+      {/* Status Badge */}
+      <StatusBadge darkMode={darkMode} />
       <ParticleBackground darkMode={darkMode} />
-      {!isHeartedPage && (
-        <div className="fixed top-4 left-4 sm:top-14 sm:left-14 z-50">
-          <div
-            className={`flex items-center gap-2 px-3 py-1.5 sm:gap-2.5 sm:px-4 sm:py-2 rounded-full backdrop-blur-2xl border shadow-[0_10px_30px_rgba(0,0,0,0.25)] ${darkMode ? 'bg-slate-900/45 border-white/5' : 'bg-white/70 border-blue-200/40'}`}
-            style={{
-              background: darkMode
-                ? 'linear-gradient(135deg, rgba(15,23,42,0.55), rgba(30,41,59,0.45))'
-                : 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(219,234,254,0.6))',
-              boxShadow: darkMode
-                ? 'inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 30px rgba(0,0,0,0.35)'
-                : 'inset 0 1px 0 rgba(255,255,255,0.8), 0 14px 30px rgba(30,64,175,0.12)'
-            }}
-          >
-            <div className="relative w-2.5 h-2.5">
-              <span className={`absolute inset-0 rounded-full ${darkMode ? 'bg-blue-400' : 'bg-blue-600'}`} style={{ animation: 'dotSwap 2s ease-in-out infinite, radarPulse 1.5s ease-in-out infinite' }}></span>
-              <span className={`absolute inset-0 rounded-full ${darkMode ? 'bg-cyan-300' : 'bg-blue-500'}`} style={{ animation: 'dotSwap 2s ease-in-out infinite, radarPulse 1.5s ease-in-out infinite', animationDelay: '1s' }}></span>
-            </div>
-            <p className={`text-xs sm:text-sm font-semibold ${darkMode ? 'text-blue-200' : 'text-blue-900'} relative h-4 sm:h-5 overflow-hidden`}
-              style={{ minWidth: '6.2rem' }}>
-              <span className="absolute left-0 top-0" style={{ animation: 'labelSwap 2s ease-in-out infinite' }}>
-                Open for work
-              </span>
-              <span className="absolute left-0 top-0" style={{ animation: 'labelSwap 2s ease-in-out infinite', animationDelay: '1s' }}>
-                Available
-              </span>
-            </p>
-          </div>
-        </div>
-      )}
+      {!isHeartedPage && null}
 
 
 

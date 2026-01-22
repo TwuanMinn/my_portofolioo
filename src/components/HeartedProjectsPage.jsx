@@ -31,9 +31,9 @@ export const HeartedProjectsPage = ({
                 </div>
 
                 <div className="mt-8 grid md:grid-cols-2 gap-6">
-                    {portfolioData.projects.filter((p) => isHearted(p.id)).map((project) => (
-                        <div key={project.id} className={`glass-card rounded-2xl p-6`}>
-                            <div className="flex items-start justify-between gap-3">
+                    {portfolioData.projects.filter((p) => isHearted(p.id)).map((project, index) => (
+                        <div key={project.id} className={`glass-card rounded-2xl p-6 h-full flex flex-col relative animate-card-wave`} style={{ animationDelay: `${index * 0.4}s` }}>
+                            <div className="flex items-start justify-between gap-3 flex-grow">
                                 <div>
                                     <h3 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-blue-900'}`}>{project.title}</h3>
                                     <p className={`${darkMode ? 'text-white/70' : 'text-blue-700'} text-sm mt-2`}>{project.description}</p>
@@ -50,7 +50,7 @@ export const HeartedProjectsPage = ({
                                 href={project.link}
                                 target="_blank"
                                 rel="noreferrer"
-                                className={`inline-flex items-center text-sm mt-4 ${darkMode ? 'text-pink-200 hover:text-pink-100' : 'text-blue-600 hover:text-blue-800'}`}
+                                className={`inline-flex items-center text-sm mt-auto ${darkMode ? 'text-pink-200 hover:text-pink-100' : 'text-blue-600 hover:text-blue-800'}`}
                             >
                                 View Project <ExternalLink size={14} className="ml-2" />
                             </a>

@@ -22,8 +22,9 @@ export const getPortfolioData = (bioText) => ({
     skillsProgress: [
         { name: "React Native", level: 87 },
         { name: "GitHub", level: 88 },
-        { name: "MongoDB", level: 82 },
-        { name: "Tailwind CSS", level: 93 }
+        { name: "Firebase", level: 92 },
+        { name: "Tailwind CSS", level: 93 },
+        { name: "Supabase", level: 78 }
     ],
 
     projects: [

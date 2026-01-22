@@ -28,6 +28,8 @@ const skillsLogos = [
     { name: 'Nginx', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg' },
     { name: 'Apache', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apache/apache-original.svg' },
     { name: 'GitHub', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
+    { name: 'MongoDB', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
+    { name: 'Tailwind CSS', url: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg' },
     { name: 'Antigravity', url: '/gg_anitigravity.png' }
 ];
 
@@ -62,29 +64,29 @@ export const Skills = ({ portfolioData, darkMode }) => {
     }, []);
 
     return (
-        <section id="skills" className={`relative overflow-hidden py-20 px-4 ${darkMode ? 'bg-[#08080b]/50' : 'bg-blue-50/50'}`} ref={skillsRef}>
+        <section id="skills" className={`relative overflow-hidden py-16 px-2 ${darkMode ? 'bg-[#08080b]/50' : 'bg-blue-50/50'}`} ref={skillsRef} style={{ maxWidth: '100vw' }}>
             {/* Flowing Liquid Blur Background (Skills only) */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-24 -left-24 w-[18rem] h-[18rem] sm:w-[26rem] sm:h-[26rem] rounded-full blur-[70px] sm:blur-[90px] opacity-85" style={{
-                    background: darkMode ? 'rgba(59, 130, 246, 0.6)' : 'rgba(59, 130, 246, 0.45)',
-                    animation: 'liquidFloat1 12s ease-in-out infinite'
+                <div className="absolute -top-24 -left-24 w-[25rem] h-[25rem] rounded-full blur-[80px] opacity-90" style={{
+                    background: darkMode ? 'rgba(59, 130, 246, 0.7)' : 'rgba(59, 130, 246, 0.5)',
+                    animation: 'liquidFloat1 8s ease-in-out infinite'
                 }} />
-                <div className="absolute top-6 -right-20 sm:top-10 sm:-right-32 w-[16rem] h-[16rem] sm:w-[24rem] sm:h-[24rem] rounded-full blur-[75px] sm:blur-[95px] opacity-85" style={{
-                    background: darkMode ? 'rgba(34, 211, 238, 0.6)' : 'rgba(34, 211, 238, 0.45)',
-                    animation: 'liquidFloat2 14s ease-in-out infinite'
+                <div className="absolute top-10 -right-32 w-[22rem] h-[22rem] rounded-full blur-[85px] opacity-90" style={{
+                    background: darkMode ? 'rgba(34, 211, 238, 0.7)' : 'rgba(34, 211, 238, 0.5)',
+                    animation: 'liquidFloat2 10s ease-in-out infinite'
                 }} />
-                <div className="absolute -bottom-24 left-10 sm:-bottom-32 sm:left-1/4 w-[20rem] h-[20rem] sm:w-[28rem] sm:h-[28rem] rounded-full blur-[80px] sm:blur-[100px] opacity-80" style={{
-                    background: darkMode ? 'rgba(99, 102, 241, 0.55)' : 'rgba(99, 102, 241, 0.4)',
-                    animation: 'liquidFloat3 16s ease-in-out infinite'
+                <div className="absolute -bottom-32 left-1/4 w-[26rem] h-[26rem] rounded-full blur-[90px] opacity-85" style={{
+                    background: darkMode ? 'rgba(99, 102, 241, 0.65)' : 'rgba(99, 102, 241, 0.45)',
+                    animation: 'liquidFloat3 12s ease-in-out infinite'
                 }} />
             </div>
             <Reveal width="100%">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className={`text-4xl font-bold mb-12 ${darkMode ? 'text-blue-100' : 'text-blue-800'}`}>Skills</h2>
+                <div className="max-w-4xl mx-auto w-full" style={{ padding: '0 0.5rem' }}>
+                    <h2 className={`text-3xl font-bold mb-8 ${darkMode ? 'text-blue-100' : 'text-blue-800'}`} style={{ fontSize: '2rem' }}>Skills</h2>
 
                     {/* Progress Bars */}
                     <div className="mb-12">
-                        <h3 className={`text-xl font-semibold mb-8 ${darkMode ? 'text-blue-200' : 'text-blue-700'}`}>Key Technologies</h3>
+                        <h3 className={`text-lg font-semibold mb-6 ${darkMode ? 'text-blue-200' : 'text-blue-700'}`} style={{ fontSize: '1.1rem' }}>Key Technologies</h3>
                         <div className="space-y-6">
                             {portfolioData.skillsProgress.map((skill, index) => (
                                 <div
@@ -115,11 +117,11 @@ export const Skills = ({ portfolioData, darkMode }) => {
                     </div>
 
                     {/* Logo Marquee */}
-                    <h3 className={`text-xl font-semibold mb-8 ${darkMode ? 'text-blue-200' : 'text-blue-700'}`}>Other Skills</h3>
+                    <h3 className={`text-lg font-semibold mb-6 ${darkMode ? 'text-blue-200' : 'text-blue-700'}`} style={{ fontSize: '1.1rem' }}>Other Skills</h3>
                     <div className={`relative overflow-hidden rounded-3xl glass-panel ${darkMode ? '' : 'shadow-blue-200'}`}>
                         <div className={`skills-marquee flex flex-col gap-6 py-4 sm:py-6 px-3 sm:px-4 ${visibleSkills ? 'opacity-100' : 'opacity-0'}`}>
                             {[0, 1].map(row => (
-                                <div key={row} className="flex gap-6 sm:gap-8 w-max" style={{ animation: 'marquee-rtl 60s linear infinite reverse' }}>
+                                <div key={row} className="flex gap-6 sm:gap-8 w-max" style={{ animation: 'marquee-rtl 10s linear infinite reverse' }}>
                                     {[...skillsLogos, ...skillsLogos].filter((_, i) => i % 2 === row).map((skill, index) => (
                                         <div
                                             key={`${skill.name}-${row}-${index}`}

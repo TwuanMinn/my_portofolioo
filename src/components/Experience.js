@@ -17,10 +17,10 @@ export const Experience = ({ portfolioData, darkMode }) => {
     });
 
     return (
-        <section id="experience" className={`py-20 px-4 ${darkMode ? 'bg-gradient-to-b from-[#020203] via-[#08080b] to-[#020203]' : 'bg-blue-50/50'}`}>
+        <section id="experience" className={`py-16 px-2 ${darkMode ? 'bg-gradient-to-b from-[#020203] via-[#08080b] to-[#020203]' : 'bg-blue-50/50'}`} style={{ maxWidth: '100vw' }}>
             <Reveal width="100%">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className={`text-4xl font-bold mb-12 ${darkMode ? 'text-blue-100' : 'text-blue-800'}`}>Work Experience</h2>
+                <div className="max-w-4xl mx-auto w-full" style={{ padding: '0 0.5rem' }}>
+                    <h2 className={`text-3xl font-bold mb-8 ${darkMode ? 'text-blue-100' : 'text-blue-800'}`} style={{ fontSize: '2rem' }}>Work Experience</h2>
                     <div className="relative" ref={timelineRef}>
                         {/* Base dimmed line */}
                         <div className={`absolute left-10 top-0 bottom-20 w-2 ${darkMode ? 'bg-slate-800/20' : 'bg-blue-200/20'}`}></div>
@@ -70,9 +70,9 @@ export const Experience = ({ portfolioData, darkMode }) => {
                                     </div>
 
                                     <div className="flex-1">
-                                        <div className={`relative glass-card rounded-2xl p-6 transition-all duration-500 group-hover:-translate-y-1 ${darkMode
+                                        <div className={`relative glass-card rounded-2xl p-6 transition-all duration-500 group-hover:-translate-y-1 animate-card-wave ${darkMode
                                             ? 'border-white/20 white-glow hover:border-white/40 shadow-[0_0_30px_rgba(255,255,255,0.05)]'
-                                            : 'hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)]'}`} style={{ animation: darkMode ? 'shadowPulse 4s ease-in-out infinite' : 'none' }}>
+                                            : 'hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)]'}`} style={{ animationDelay: `${index * 0.4}s` }}>
                                             <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-blue-800'} mb-1 transition-colors duration-300`}>{job.role}</h3>
                                             <p className={`${darkMode ? 'text-cyan-300' : 'text-blue-600'} text-sm mb-4 transition-colors duration-300 font-semibold`}>{job.period}</p>
                                             <p className={`${darkMode ? 'text-gray-200' : 'text-blue-700'} leading-relaxed transition-colors duration-300`}>{job.description}</p>
