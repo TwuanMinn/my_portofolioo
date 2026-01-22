@@ -6,9 +6,9 @@ const LoadingScreen = ({ onLoadingComplete }) => {
     const [currentLine, setCurrentLine] = useState(0);
 
     useEffect(() => {
-        // Animate code lines appearing
+        // Animate code lines appearing - spread over 4 seconds
         const lineTimers = [];
-        const delays = [0, 150, 300, 450, 600, 700, 800];
+        const delays = [0, 600, 1200, 1800, 2400, 3000, 3600];
 
         delays.forEach((delay, index) => {
             const timer = setTimeout(() => {
@@ -17,17 +17,17 @@ const LoadingScreen = ({ onLoadingComplete }) => {
             lineTimers.push(timer);
         });
 
-        // Complete loading after animation
+        // Complete loading after 5 seconds
         const completeTimer = setTimeout(() => {
             setIsLoading(false);
-        }, 1400);
+        }, 5000);
 
-        // Call onLoadingComplete after exit animation
+        // Call onLoadingComplete after exit animation (5s + 0.5s for exit)
         const callbackTimer = setTimeout(() => {
             if (onLoadingComplete) {
                 onLoadingComplete();
             }
-        }, 1900);
+        }, 5500);
 
         return () => {
             lineTimers.forEach(t => clearTimeout(t));
@@ -195,7 +195,7 @@ const LoadingScreen = ({ onLoadingComplete }) => {
                                             }}
                                             initial={{ width: '0%' }}
                                             animate={{ width: '100%' }}
-                                            transition={{ duration: 1.3, ease: 'easeInOut' }}
+                                            transition={{ duration: 4.8, ease: 'easeInOut' }}
                                         />
                                     </motion.div>
                                     <span className="text-xs text-slate-400 font-mono">Loading...</span>
