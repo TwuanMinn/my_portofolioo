@@ -32,19 +32,43 @@ export const getPortfolioData = (bioText) => ({
             id: 'proj-habit',
             title: "Habit Tracking Mobile Application",
             description: "Native Android app with Firebase backend. Features habit creation, monitoring, reminders, and progress visualization with intuitive UI design and real-time data sync.",
-            link: "#"
+            link: "#",
+            techStack: ["React Native", "Firebase", "JavaScript", "Tailwind CSS"]
         },
         {
             id: 'proj-lstm',
             title: "LSTM Machine Translation (EN → FR)",
             description: "LSTM Encoder-Decoder with Attention mechanism for English-French translation using PyTorch. Handled ML workflow including preprocessing, model training, and performance evaluation.",
-            link: "#"
+            link: "#",
+            techStack: ["Python", "PyTorch", "Machine Learning", "NumPy"]
         },
         {
             id: 'proj-portfolio',
             title: "Resume Portfolio Website",
             description: "Responsive portfolio built with React and Tailwind CSS. Features AI-powered chatbot for visitor engagement, smooth animations, dark/light mode, and backend API integration.",
-            link: "#"
+            link: "#",
+            techStack: ["React", "Tailwind CSS", "Node.js", "Vercel"]
+        },
+        {
+            id: 'proj-ecommerce',
+            title: "E-Commerce Platform",
+            description: "Full-stack e-commerce solution with product management, shopping cart, secure checkout, and admin dashboard. Integrated payment processing and real-time inventory tracking.",
+            link: "#",
+            techStack: ["Next.js", "TypeScript", "PostgreSQL", "Stripe"]
+        },
+        {
+            id: 'proj-taskmanager',
+            title: "Collaborative Task Manager",
+            description: "Real-time task management app with team collaboration features, drag-and-drop boards, deadline notifications, and performance analytics dashboard.",
+            link: "#",
+            techStack: ["React", "Node.js", "MongoDB", "Socket.io"]
+        },
+        {
+            id: 'proj-weatherapp',
+            title: "Weather Forecast Dashboard",
+            description: "Beautiful weather application with location-based forecasts, interactive maps, hourly/weekly predictions, and severe weather alerts using multiple weather APIs.",
+            link: "#",
+            techStack: ["Vue.js", "TypeScript", "REST API", "Chart.js"]
         }
     ],
 

@@ -16,6 +16,8 @@ import { HeartedProjectsPage } from './components/HeartedProjectsPage.jsx';
 import ParticleBackground from './components/ParticleBackground';
 import CustomCursor from './components/CustomCursor.jsx';
 import StatusBadge from './components/StatusBadge.jsx';
+import ScrollProgress from './components/ScrollProgress.jsx';
+import LoadingScreen from './components/LoadingScreen.jsx';
 import { getPortfolioData, texts, popupMessages } from './data/portfolioData';
 import './App.css';
 import './glass.css';
@@ -27,7 +29,7 @@ export default function Portfolio() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const [activeSection, setActiveSection] = useState('about');
-
+  const [isAppLoading, setIsAppLoading] = useState(true);
 
   const [darkMode, setDarkMode] = useState(true);
   const [chatOpen, setChatOpen] = useState(false);
@@ -338,117 +340,122 @@ export default function Portfolio() {
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gradient-to-br from-[#050508] via-[#0a0a10] to-[#070709]' : 'bg-gradient-to-br from-blue-50 via-cyan-50 to-white'}`}>
-      <CustomCursor darkMode={darkMode} />
-      {/* Status Badge */}
-      <StatusBadge darkMode={darkMode} />
-      <ParticleBackground darkMode={darkMode} />
-      {!isHeartedPage && null}
+    <>
+      {/* Loading Screen */}
+      <LoadingScreen onLoadingComplete={() => setIsAppLoading(false)} />
+
+      <div className={`min-h-screen ${darkMode ? 'bg-gradient-to-br from-[#050508] via-[#0a0a10] to-[#070709]' : 'bg-gradient-to-br from-blue-50 via-cyan-50 to-white'}`}>
+        <ScrollProgress darkMode={darkMode} />
+        <CustomCursor darkMode={darkMode} />
+        {/* Status Badge */}
+        <StatusBadge darkMode={darkMode} />
+        <ParticleBackground darkMode={darkMode} />
 
 
 
 
 
-      {/* Floating Toolbar */}
-      <Toolbar
-        toolbarVisible={toolbarVisible}
-        activeSection={activeSection}
-        scrollToSection={scrollToSection}
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-        toggleReadAloud={toggleReadAloud}
-        isReading={isReading}
-        handleCopyLink={handleCopyLink}
-        copySuccess={copySuccess}
-        handleShareLink={handleShareLink}
-        shareSuccess={shareSuccess}
-        setQrOpen={setQrOpen}
-      />
-
-      <QrModal
-        qrOpen={qrOpen}
-        setQrOpen={setQrOpen}
-        portfolioUrl={portfolioUrl}
-        qrCodeUrl={qrCodeUrl}
-        handleDownloadQr={handleDownloadQr}
-      />
-
-      {isHeartedPage && (
-        <HeartedProjectsPage
+        {/* Floating Toolbar */}
+        <Toolbar
+          toolbarVisible={toolbarVisible}
+          activeSection={activeSection}
+          scrollToSection={scrollToSection}
           darkMode={darkMode}
-          navigate={navigate}
-          portfolioData={portfolioData}
-          isHearted={isHearted}
-          handleHeartClick={handleHeartClick}
-          heartAnimating={heartAnimating}
+          setDarkMode={setDarkMode}
+          toggleReadAloud={toggleReadAloud}
+          isReading={isReading}
+          handleCopyLink={handleCopyLink}
+          copySuccess={copySuccess}
+          handleShareLink={handleShareLink}
+          shareSuccess={shareSuccess}
+          setQrOpen={setQrOpen}
         />
-      )}
 
-      {!isHeartedPage && (
-        <>
-          {/* Hero Section */}
-          <Hero
-            portfolioData={portfolioData}
+        <QrModal
+          qrOpen={qrOpen}
+          setQrOpen={setQrOpen}
+          portfolioUrl={portfolioUrl}
+          qrCodeUrl={qrCodeUrl}
+          handleDownloadQr={handleDownloadQr}
+        />
+
+        {isHeartedPage && (
+          <HeartedProjectsPage
             darkMode={darkMode}
-            displayedText={displayedText}
-            popupVisible={popupVisible}
-            popupMessages={popupMessages}
-            popupMessageIndex={popupMessageIndex}
-            chatOpen={chatOpen}
-            setChatOpen={setChatOpen}
-            scrollToSection={scrollToSection}
-          />
-
-          {/* Scroll to Top Button */}
-          {showScrollTop && (
-            <button
-              onClick={scrollToTop}
-              className={`fixed bottom-16 sm:bottom-8 right-4 sm:right-8 left-auto p-2 sm:p-3 rounded-full transition-all duration-300 transform hover:scale-110 z-[60] animate-bounce ${darkMode
-                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/50'
-                : 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg shadow-blue-500/60 ring-2 ring-blue-200/80'
-                } text-white`}
-              aria-label="Scroll to top"
-            >
-              <ArrowUp size={24} />
-            </button>
-          )}
-
-          {/* About Section */}
-          <About
+            navigate={navigate}
             portfolioData={portfolioData}
-            darkMode={darkMode}
-            aboutHeadingVisible={aboutHeadingVisible}
-            aboutWordsVisible={aboutWordsVisible}
-          />
-
-          {/* Skills Section */}
-          <Skills portfolioData={portfolioData} darkMode={darkMode} />
-
-          {/* Projects Section */}
-          <Projects
-            portfolioData={portfolioData}
-            darkMode={darkMode}
             isHearted={isHearted}
             handleHeartClick={handleHeartClick}
             heartAnimating={heartAnimating}
           />
+        )}
 
-          {/* Certificates Section */}
-          <Certificates portfolioData={portfolioData} darkMode={darkMode} />
+        {!isHeartedPage && (
+          <>
+            {/* Hero Section */}
+            <Hero
+              portfolioData={portfolioData}
+              darkMode={darkMode}
+              displayedText={displayedText}
+              popupVisible={popupVisible}
+              popupMessages={popupMessages}
+              popupMessageIndex={popupMessageIndex}
+              chatOpen={chatOpen}
+              setChatOpen={setChatOpen}
+              scrollToSection={scrollToSection}
+            />
 
-          {/* Experience Section */}
-          <Experience portfolioData={portfolioData} darkMode={darkMode} />
+            {/* Scroll to Top Button */}
+            {showScrollTop && (
+              <button
+                onClick={scrollToTop}
+                className={`fixed bottom-16 sm:bottom-8 right-4 sm:right-8 left-auto p-2 sm:p-3 rounded-full transition-all duration-300 transform hover:scale-110 z-[60] animate-bounce ${darkMode
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/50'
+                  : 'bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg shadow-blue-500/60 ring-2 ring-blue-200/80'
+                  } text-white`}
+                aria-label="Scroll to top"
+              >
+                <ArrowUp size={24} />
+              </button>
+            )}
 
-          {/* Contact Section */}
+            {/* About Section */}
+            <About
+              portfolioData={portfolioData}
+              darkMode={darkMode}
+              aboutHeadingVisible={aboutHeadingVisible}
+              aboutWordsVisible={aboutWordsVisible}
+            />
 
-          {/* Contact Section */}
-          <Contact portfolioData={portfolioData} darkMode={darkMode} />
+            {/* Skills Section */}
+            <Skills portfolioData={portfolioData} darkMode={darkMode} />
 
-          {/* Footer */}
-          <Footer portfolioData={portfolioData} darkMode={darkMode} />
-        </>
-      )
-      }
-    </div >
+            {/* Projects Section */}
+            <Projects
+              portfolioData={portfolioData}
+              darkMode={darkMode}
+              isHearted={isHearted}
+              handleHeartClick={handleHeartClick}
+              heartAnimating={heartAnimating}
+            />
+
+            {/* Certificates Section */}
+            <Certificates portfolioData={portfolioData} darkMode={darkMode} />
+
+            {/* Experience Section */}
+            <Experience portfolioData={portfolioData} darkMode={darkMode} />
+
+            {/* Contact Section */}
+
+            {/* Contact Section */}
+            <Contact portfolioData={portfolioData} darkMode={darkMode} />
+
+            {/* Footer */}
+            <Footer portfolioData={portfolioData} darkMode={darkMode} />
+          </>
+        )
+        }
+      </div>
+    </>
   );
 }

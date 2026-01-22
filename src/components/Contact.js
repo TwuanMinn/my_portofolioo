@@ -24,10 +24,10 @@ const contactIconStyle = (isDark) => ({
 
 export const Contact = ({ portfolioData, darkMode }) => {
     return (
-        <section id="contact" className="py-16 px-2" style={{maxWidth: '100vw'}}>
+        <section id="contact" className="py-16 px-2" style={{ maxWidth: '100vw' }}>
             <Reveal width="100%">
-                <div className="max-w-6xl mx-auto w-full" style={{padding: '0 0.5rem'}}>
-                    <h2 className={`text-3xl font-bold mb-8 ${darkMode ? 'text-blue-100' : 'text-blue-800'}`} style={{fontSize: '2rem'}}>CONTACT</h2>
+                <div className="max-w-6xl mx-auto w-full" style={{ padding: '0 0.5rem' }}>
+                    <h2 className={`text-3xl font-bold mb-8 ${darkMode ? 'text-blue-100' : 'text-blue-800'}`} style={{ fontSize: '2rem' }}>CONTACT</h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-8">
