@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Atom } from 'lucide-react';
 
 const LoadingScreen = ({ onLoadingComplete }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -266,7 +267,51 @@ const LoadingScreen = ({ onLoadingComplete }) => {
                                             transition={{ duration: 7.5, ease: 'easeInOut' }}
                                         />
                                     </motion.div>
-                                    <span className="text-xs text-slate-400 font-mono">Loading...</span>
+                                    <div className="flex items-center gap-2">
+                                        {/* 3D Atom Animation */}
+                                        <div className="relative w-12 h-12 flex items-center justify-center perspective-500">
+                                            {/* Nucleus */}
+                                            <div className="absolute w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.9)] z-10" />
+
+                                            {/* 3 Intersecting Orbits */}
+                                            {[0, 60, 120].map((angle, i) => (
+                                                <div
+                                                    key={i}
+                                                    className="absolute inset-0"
+                                                    style={{ transform: `rotateZ(${angle}deg)` }}
+                                                >
+                                                    {/* Orbit Ring Container - Tilted to create ellipse */}
+                                                    <div className="w-full h-full" style={{ transform: 'rotateX(70deg)' }}>
+                                                        {/* Spinning Path */}
+                                                        <motion.div
+                                                            className="absolute inset-0 rounded-full border-[1.5px] border-cyan-400/60"
+                                                            animate={{ rotate: 360 }}
+                                                            transition={{
+                                                                duration: 3,
+                                                                repeat: Infinity,
+                                                                ease: "linear",
+                                                                delay: i * -1 // Desynchronize electrons
+                                                            }}
+                                                            style={{ transformStyle: "preserve-3d" }}
+                                                        >
+                                                            {/* Electron - Counter-rotated to stay round */}
+                                                            <div
+                                                                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,1)]"
+                                                                style={{ transform: 'rotateX(-70deg)' }}
+                                                            />
+                                                        </motion.div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <motion.span
+                                            className="text-sm text-slate-300 font-mono tracking-wider"
+                                            animate={{ opacity: [0.4, 1, 0.4] }}
+                                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                        >
+                                            Loading...
+                                        </motion.span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
